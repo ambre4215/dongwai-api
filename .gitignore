@@ -48,3 +48,4 @@ profile.out
 # 如果你有本地存储音频文件的临时目录
 /audio/
 /开发指导.md
+user-cli
