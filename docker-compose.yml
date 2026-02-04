@@ -2,7 +2,7 @@ services:
   app:
     image: ${APP_IMAGE}
     ports:
-      - "${APP_PORT}:8080"
+      - "${APP_PORT}:9000"
     env_file:
       - .env
     extra_hosts:
