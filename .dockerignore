@@ -1,0 +1,16 @@
+.git
+.vscode
+.idea
+*.md
+*.bat
+*.exe
+*.out
+*.test
+coverage.txt
+profile.out
+vendor
+.env
+.env.*
+server
+dist
+build

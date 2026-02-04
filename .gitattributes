@@ -1,0 +1,15 @@
+# 默认行为：自动检测文本文件，提交时转换为LF，检出时根据系统决定
+* text=auto
+
+# 强制 Go 代码文件永远使用 LF (即使在 Windows 上)
+# 这是 Go 社区推荐的做法，可以避免跨平台编译时的潜在隐患
+*.go text eol=lf
+*.mod text eol=lf
+*.sum text eol=lf
+
+# 其他常见配置文件也建议强制 LF
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+.gitignore text eol=lf
