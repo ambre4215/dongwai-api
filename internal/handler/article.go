@@ -27,6 +27,7 @@ type WordDetail struct {
 	VocabID  string          `json:"vocab_id"` // ✅ 新增
 	SenseID  string          `json:"sense_id"`
 	Level    string          `json:"level"`
+	Pitch    string          `json:"pitch"`
 	Reading  string          `json:"reading"`
 	Def      string          `json:"def"`
 	Pos      string          `json:"pos"`

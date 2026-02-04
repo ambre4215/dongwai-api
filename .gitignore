@@ -18,6 +18,7 @@ vendor/
 !.env.example
 *.pem
 *.key
+ssh_key
 
 # --- IDE 与编辑器配置 ---
 # VS Code

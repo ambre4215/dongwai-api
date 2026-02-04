@@ -2,9 +2,13 @@ services:
   app:
     image: ${APP_IMAGE}
     ports:
-      - "${APP_PORT}:9000"
+      - "${APP_PORT}:${PORT}"
     env_file:
       - .env
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     restart: unless-stopped
+    networks:
+      - 1panel-network
+
+networks:
+  1panel-network:
+    external: true
