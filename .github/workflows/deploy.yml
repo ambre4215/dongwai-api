@@ -12,6 +12,13 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      APP_DIR: ${{ secrets.APP_DIR }}
+      GHCR_USER: ${{ secrets.GHCR_USER }}
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,17 +38,17 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/dongwai-api:latest
 
       - name: deploy
-        if: ${{ secrets.SSH_HOST != '' && secrets.SSH_USER != '' && secrets.SSH_KEY != '' && secrets.APP_DIR != '' && secrets.GHCR_USER != '' && secrets.GHCR_TOKEN != '' }}
+        if: ${{ env.SSH_HOST != '' && env.SSH_USER != '' && env.SSH_KEY != '' && env.APP_DIR != '' && env.GHCR_USER != '' && env.GHCR_TOKEN != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_KEY }}
           script: |
             set -e
-            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USER }}" --password-stdin
+            echo "${{ env.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ env.GHCR_USER }}" --password-stdin
             export APP_IMAGE="ghcr.io/${{ github.repository_owner }}/dongwai-api:latest"
-            cd "${{ secrets.APP_DIR }}"
+            cd "${{ env.APP_DIR }}"
             docker compose pull app
             docker compose up -d --remove-orphans
             docker image prune -f
