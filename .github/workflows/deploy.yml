@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/dongwai-api:latest
 
       - name: deploy
         if: ${{ secrets.SSH_HOST != '' && secrets.SSH_USER != '' && secrets.SSH_KEY != '' && secrets.APP_DIR != '' && secrets.GHCR_USER != '' && secrets.GHCR_TOKEN != '' }}
@@ -40,7 +40,7 @@ jobs:
           script: |
             set -e
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USER }}" --password-stdin
-            export APP_IMAGE="ghcr.io/${{ github.repository }}:latest"
+            export APP_IMAGE="ghcr.io/${{ github.repository_owner }}/dongwai-api:latest"
             cd "${{ secrets.APP_DIR }}"
             docker compose pull app
             docker compose up -d --remove-orphans
