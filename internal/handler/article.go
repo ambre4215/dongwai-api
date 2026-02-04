@@ -296,6 +296,7 @@ func buildAnalyzeResp(tokens []Token, tokenVocabIDsMap map[int][]string, vocabOb
 				SenseID:  opt.Sense.ID,
 				Level:    opt.Sense.Level,
 				Reading:  opt.Sense.Reading,
+				Pitch:    opt.Sense.Pitch,
 				Def:      opt.Sense.Def,
 				Pos:      opt.Sense.Pos,
 				Selected: isSelected,

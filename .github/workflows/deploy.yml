@@ -35,10 +35,33 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          platforms: linux/amd64
           tags: ghcr.io/${{ github.repository_owner }}/dongwai-api:latest
 
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          platforms: linux/amd64
+          tags: ghcr.io/${{ github.repository_owner }}/dongwai-api:latest
+
+      - name: export-image
+        run: |
+          docker save ghcr.io/${{ github.repository_owner }}/dongwai-api:latest | gzip -1 > dongwai-api.tar.gz
+
+      - name: upload-image
+        if: ${{ env.SSH_HOST != '' && env.SSH_USER != '' && env.SSH_KEY != '' && env.APP_DIR != '' }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_KEY }}
+          source: dongwai-api.tar.gz
+          target: ${{ env.APP_DIR }}
+
       - name: deploy
-        if: ${{ env.SSH_HOST != '' && env.SSH_USER != '' && env.SSH_KEY != '' && env.APP_DIR != '' && env.GHCR_USER != '' && env.GHCR_TOKEN != '' }}
+        if: ${{ env.SSH_HOST != '' && env.SSH_USER != '' && env.SSH_KEY != '' && env.APP_DIR != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ env.SSH_HOST }}
@@ -46,9 +69,10 @@ jobs:
           key: ${{ env.SSH_KEY }}
           script: |
             set -e
-            echo "${{ env.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ env.GHCR_USER }}" --password-stdin
             export APP_IMAGE="ghcr.io/${{ github.repository_owner }}/dongwai-api:latest"
             cd "${{ env.APP_DIR }}"
-            docker compose pull app
-            docker compose up -d --remove-orphans
+            gzip -d -f dongwai-api.tar.gz
+            docker load -i dongwai-api.tar
+            rm -f dongwai-api.tar
+            docker compose up -d --remove-orphans --no-deps --force-recreate app
             docker image prune -f

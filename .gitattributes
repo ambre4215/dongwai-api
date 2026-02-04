@@ -13,3 +13,7 @@
 *.yaml text eol=lf
 *.json text eol=lf
 .gitignore text eol=lf
+
+# Windows 批处理脚本强制 CRLF，避免双击运行异常
+*.bat text eol=crlf
+*.cmd text eol=crlf

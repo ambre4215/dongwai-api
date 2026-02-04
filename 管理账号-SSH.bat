@@ -3,11 +3,6 @@ setlocal EnableExtensions
 
 chcp 65001 >nul
 
-if /i not "%~1"=="--stay" (
-  start "DongWai 账号管理" cmd /k ""%~f0" --stay"
-  exit /b 0
-)
-
 set "DW_SSH_USERHOST=root@117.72.15.108"
 set "DW_SSH_PORT=22"
 set "DW_REMOTE_DIR=/opt/1panel/docker/compose/dongwai-api"
